@@ -6,8 +6,10 @@
  *  Please see LICENSE file for your rights under this license. */
 
 /* global utils:false, moment:false */
+/* exported _privacyLevel */
 
 var _isLoginPage = false;
+var _privacyLevel;
 
 const REFRESH_INTERVAL = {
   logs: 500, // 0.5 sec (logs page)
@@ -306,6 +308,7 @@ function updateFtlInfo() {
         .format("dddd, MMMM Do YYYY, HH:mm:ss");
       $("#sysinfo-uptime-ftl").text(startdate);
       $("#sysinfo-privacy_level").text(ftl.privacy_level);
+      _privacyLevel = ftl.privacy_level;
       $("#sysinfo-ftl-overlay").hide();
 
       $(".destructive_action").prop("disabled", !ftl.allow_destructive);

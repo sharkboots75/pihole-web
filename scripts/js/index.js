@@ -5,7 +5,7 @@
  *  This file is copyright under the latest version of the EUPL.
  *  Please see LICENSE file for your rights under this license. */
 
-/* global utils:false, Chart:false, apiFailure:false, THEME_COLORS:false, customTooltips:false, htmlLegendPlugin:false,doughnutTooltip:false, ChartDeferred:false, REFRESH_INTERVAL: false, updateQueryFrequency: false */
+/* global utils:false, Chart:false, apiFailure:false, THEME_COLORS:false, customTooltips:false, htmlLegendPlugin:false,doughnutTooltip:false, ChartDeferred:false, REFRESH_INTERVAL: false, updateQueryFrequency: false, _privacyLevel: false */
 
 // Define global variables
 var timeLineChart, clientsChart;
@@ -294,10 +294,17 @@ function updateTopClientsTable(blocked) {
     let url, percentage;
     const sum = blocked ? data.blocked_queries : data.total_queries;
 
-    // Remove table if there are no results (e.g. new
-    // installation or privacy mode enabled)
+    // When there is no data...
+    // a) remove table if there are no results (privacy mode enabled) or
+    // b) add note if there are no results (e.g. new installation)
     if (jQuery.isEmptyObject(data.clients)) {
-      table.remove();
+      if (_privacyLevel > 1) {
+        table.remove();
+      } else {
+        clienttable.append('<tr><td colspan="3"><center>- No data -</center></td></tr>');
+        overlay.hide();
+      }
+
       return;
     }
 
@@ -356,10 +363,17 @@ function updateTopDomainsTable(blocked) {
     let url, domain, percentage, urlText;
     const sum = blocked ? data.blocked_queries : data.total_queries;
 
-    // Remove table if there are no results (e.g. new
-    // installation or privacy mode enabled)
+    // When there is no data...
+    // a) remove table if there are no results (privacy mode enabled) or
+    // b) add note if there are no results (e.g. new installation)
     if (jQuery.isEmptyObject(data.domains)) {
-      table.remove();
+      if (_privacyLevel > 0) {
+        table.remove();
+      } else {
+        domaintable.append('<tr><td colspan="3"><center>- No data -</center></td></tr>');
+        overlay.hide();
+      }
+
       return;
     }
 
